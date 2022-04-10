@@ -17,21 +17,35 @@ Generate a CSV Report of the issues
 
 
 ## Indepth Requirements and Features:
- - [ ] Create backend database connector
+### Database:
+ - [ ] Create backend database connectors
     - [ ] Create a database model using SQL Alchemy
-    - [ ] Create input into functionality
+    - [ ] Create a database model function to control, refresh or manually update the database
     - [ ] Create requests to the database for adding and removing issues
     - [ ] Create requests to the database for adding and removing users
     - [ ] Create requests to the database for adding and removing affected hosts to an engagement
     - [ ] Create requests to the database for adding and removing engagements
-    - [ ] Create requests to the database for adding and removing users
-    - [ ] Create requests to the database for issues
+    - [ ] Create requests to the database for adding and removing customers? -- might not need this tbh
+    - [ ] Create requests to the database for adding and removing phases of engagements
 
+
+### Frontend:
  - [ ] Create frontend web application
     - [ ] Create issue risk marking functionality
-    - [ ] Create issue library functionality
-    - [ ] Create visualisation functionality
+    - [ ] Create issue library page
+    - [ ] Create visualisation and main engagement page
+    - [ ] Create engagement creation page
+    - [ ] Create profile page
+    - [ ] Create admin page
+    - [ ] Create user addition and removal page, and user management page
     - [ ] Create report generation functionality
+    - [ ] Create issue addition page
+    - [ ] Create user authentication/login landing page
+    - [ ] Create issue removal or move functionality
+    - [ ] Create phase addition removal or movement functionality in engagement page
+
+
+### Backend:
  - [ ] Create word/template documenting functionality
  - [ ] Create User Authentication & Access Control Matrix
  - [ ] Create CSV report generation functionality
