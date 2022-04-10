@@ -47,6 +47,10 @@ Generate a CSV Report of the issues
 
 ### Backend:
  - [ ] Create word/template documenting functionality
+    - [ ] Create a word template by using python-docx-template
+    - [ ] Create functionality to apply data from the database to the template
  - [ ] Create User Authentication & Access Control Matrix
+    - [ ] Create a user authentication and access control matrix function, and apply privileges to user roles
+
  - [ ] Create CSV report generation functionality
 
