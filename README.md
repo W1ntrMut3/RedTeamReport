@@ -16,23 +16,23 @@ Generate a report based on a template
 Generate a CSV Report of the issues
 
 
-Current requirements and to-do's:
- -[] Create backend database connector
-    -[] Create a database model using SQL Alchemy
-    -[] Create input into functionality
-    -[] Create requests to the database for adding and removing issues
-    -[] Create requests to the database for adding and removing users
-    -[] Create requests to the database for adding and removing affected hosts to an engagement
-    -[] Create requests to the database for adding and removing engagements
-    -[] Create requests to the database for adding and removing users
-    -[] Create requests to the database for issues
+## Indepth Requirements and Features:
+ -[ ] Create backend database connector
+    -[ ] Create a database model using SQL Alchemy
+    -[ ] Create input into functionality
+    -[ ] Create requests to the database for adding and removing issues
+    -[ ] Create requests to the database for adding and removing users
+    -[ ] Create requests to the database for adding and removing affected hosts to an engagement
+    -[ ] Create requests to the database for adding and removing engagements
+    -[ ] Create requests to the database for adding and removing users
+    -[ ] Create requests to the database for issues
 
- -[] Create frontend web application
-    -[] Create issue risk marking functionality
-    -[] Create issue library functionality
-    -[] Create visualisation functionality
-    -[] Create report generation functionality
- -[] Create word/template documenting functionality
- -[] Create User Authentication & Access Control Matrix
- -[] Create CSV report generation functionality
+ -[ ] Create frontend web application
+    -[ ] Create issue risk marking functionality
+    -[ ] Create issue library functionality
+    -[ ] Create visualisation functionality
+    -[ ] Create report generation functionality
+ -[ ] Create word/template documenting functionality
+ -[ ] Create User Authentication & Access Control Matrix
+ -[ ] Create CSV report generation functionality
 
