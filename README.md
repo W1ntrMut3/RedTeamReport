@@ -20,6 +20,7 @@ Generate a CSV Report of the issues
 ### Database:
  - [ ] Create backend database connectors
     - [ ] Create a database model using SQL Alchemy
+    Test to see what this looks like and if I can put more info under it?
     - [ ] Create a database model function to control, refresh or manually update the database
     - [ ] Create requests to the database for adding and removing issues
     - [ ] Create requests to the database for adding and removing users
@@ -47,10 +48,19 @@ Generate a CSV Report of the issues
 
 ### Backend:
  - [ ] Create word/template documenting functionality
-    - [ ] Create a word template by using python-docx-template
+    - [ ] Create a word template processing function by using python-docx-template
+    - [ ] Create a word document template with jinja2
     - [ ] Create functionality to apply data from the database to the template
  - [ ] Create User Authentication & Access Control Matrix
     - [ ] Create a user authentication and access control matrix function, and apply privileges to user roles
-
+    - [ ] Define individual roles that build from the bottom up (Viewer > Contributor > Manager > Admin)
+    - [ ] Tag and update functionality at API level? with user roles
  - [ ] Create CSV report generation functionality
+    - [ ] Create a csv file output and structure it using lists and using csv library
+
+ - [ ] Create Docker/K8 container for Web Server and App Server components/ Maybe microservice?
+    - [ ] Research differences between web and app servers and find appropriate setups
+
+
+
 
