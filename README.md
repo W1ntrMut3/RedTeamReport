@@ -19,7 +19,7 @@ Generate a CSV Report of the issues
 ## Indepth Requirements and Features:
 ### Database:
  - [ ] Create backend database connectors
-    - [ ] Create a database model using SQL Alchemy
+    - [x] Create a database model using SQL Alchemy
     - Create classes for the following tables:
         - Rest VKD
         - Live VKD
