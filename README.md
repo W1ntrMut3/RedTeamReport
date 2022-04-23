@@ -53,6 +53,8 @@ Generate a CSV Report of the issues
 
 
 ### Backend:
+ - [ ] Create API to hook into frontend
+
  - [ ] Create word/template documenting functionality
     - [ ] Create a word template processing function by using python-docx-template
     - [ ] Create a word document template with jinja2

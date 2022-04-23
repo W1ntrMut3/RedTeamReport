@@ -1,28 +1,10 @@
-from flask import render_template, url_for, flash, redirect, request
-from RedTeamReport import app, db, bcrypt
-from RedTeamReport.forms import LoginForm
-from RedTeamReport.models import db_User
-from flask_login import login_user, current_user, logout_user, login_required
+from flask import render_template, url_for, flash, redirect, request, jsonify
+from RedTeamReporter import app, db, bcrypt
+from RedTeamReporter.forms import LoginForm
+from RedTeamReporter.models import db_Assets, db_liveVKD, db_restVKD, db_Engagement
+#from flask_login import login_user, current_user, logout_user, login_required
 from urllib.parse import urlparse, urljoin
 
-
-
-print(args.db_rebuild_delete)
-
-posts = [
-    {
-        'author': 'Corey Schafer',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018'
-    }
-]
 
 
 def is_safe_url(target):
@@ -32,11 +14,20 @@ def is_safe_url(target):
 
 
 
+
+@app.route('/', methods=['GET','POST'])
+def main_page():
+    return("Hello World")
+
+@app.get("/hello")
+def say_hello():
+    return jsonify({"message": "hello world"})
+
+
 '''
 Login Page routes, deals with logging in, creating a session using flask_login and redirecting to the home page
 '''
-@app.route('/', methods=['GET','POST'])
-@app.route('/login', methods=['GET','POST'])
+'''@app.route('/login', methods=['GET','POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
@@ -55,25 +46,29 @@ def login():
 
     return render_template('login.html', form=form)
 
-
+'''
 
 '''
 Main dashboard that should appear on first login. Should include buttons to add new engagements, and retrieve current projects
 that are specific to the user. 
 '''
-@app.route('/dashboard')
-def dashboard():
+#@app.route('/dashboard')
+#def dashboard():
+    
+'''
+    Future Authentication work to be done here, flask_login wont work with API properly maybe.
+    
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     return render_template('dashboard.html', user=current_user)
-
+'''
 
 '''
 This should be rolled into the dashboard, but for now it is just a test page.
 '''
-@app.route('/home')
-def home():
-	return render_template('home.html', posts=posts)
+#@app.route('/home')
+#def home():
+#	return render_template('home.html', posts=posts)
 
 
 
@@ -82,35 +77,48 @@ def home():
 This page will act as the home for the currently selected engagement. It will include a list of phases and issues in phases. The
  user will be able to select a phase and then view the issues in that phase.
 '''
-@app.route('/engagement')
-def project():
+#@app.route('/engagement')
+#def project():
+
+'''
+    Future Authentication work to be done here, flask_login wont work with API properly maybe.
+    
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     return render_template('engagement.html', user=current_user)
-
+'''
 
 
 '''
 
 '''
-@app.route('/passwordreset')
-def customer():
+#@app.route('/passwordreset')
+#def customer():
+
+'''
+    Future Authentication work to be done here, flask_login wont work with API properly maybe.
+    
     if not current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     return render_template('passwordreset.html')
-
+'''
 
 
 '''
 This will be the main add a new engagement and phases page. A user can add a new engagement, and then add phases to that engagement.
 After that has been configured, other engagement data is able to be added such as custmer etc.
 '''
-@app.route('/newengagement')
-def newengagement():
+#@app.route('/newengagement')
+#def newengagement():
+
+
+'''
+    Future Authentication work to be done here, flask_login wont work with API properly maybe.
+    
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     return render_template('newengagement.html', user=current_user)
-
+'''
 
 
 
@@ -119,30 +127,42 @@ This page will show all of the Vulnerability Knowledge Database (VKB) issues tha
 will need some serach functionality or sort functionality to go through them, and probably only list up to 50 so
 pagination will be required as well.
 '''
-@app.route('/vkd')
-def vkd():
+#@app.route('/vkd')
+#def vkd():
+
+'''
+    Future Authentication work to be done here, flask_login wont work with API properly maybe.
+    
 	if not current_user.is_authenticated:
         return redirect(url_for('login'))
     return render_template('vkd.html', user=current_user)
-
+'''
 
 
 '''
 Admin page to add new users, and delete users, pause user login, and resume user login, add directly to the database.
 Other functionality TBD, maybe configuration options?
 '''
-@app.route('/admin')
-def admin():
+
+#@app.route('/admin')
+#def admin():
+
+
+
+'''
+    Future Authentication work to be done here, flask_login wont work with API properly maybe.
+    
 	if not current_user.is_authenticated:
         return redirect(url_for('login'))
     return render_template('dashboard.html', user=current_user)
-
+'''
 
 
 '''
-Logout requests come here to null the session and redirect for url.
-'''
+Logout requests come here to null the session and redirect for url. Not yet in use as the authentication method has changed.
+
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('login'))
+'''

@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
-from RedTeamReport.config import Config, ProdConfig, DevConfig
-
+#from flask_login import LoginManager
+from RedTeamReporter.config.flask_config import Config, ProdConfig, DevConfig
+#from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 
 app = Flask(__name__)
 
@@ -18,8 +18,8 @@ else:
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
-login_manager.login_message_category = 'info'
+#login_manager = LoginManager(app)
+#login_manager.login_view = 'login'
+#login_manager.login_message_category = 'info'
 
-from RedTeamReport import routes
+from RedTeamReporter import routes

@@ -1,11 +1,12 @@
 from datetime import datetime
-from RedTeamReport import db, login_manager
-from flask_login import UserMixin
+from RedTeamReporter import db
+##from flask_login import UserMixin
 
-
+'''
 @login_manager.user_loader
 def load_user(user_id):
     return db_User.query.get(int(user_id))
+
 
 class db_User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -46,8 +47,7 @@ class db_User(db.Model, UserMixin):
     
     def __repr__(self):
         return f"User('{self.userName}', '{self.userEmail}', '{self.userCanLogin}')"
-
-
+'''
 
 class db_restVKD(db.Model):
     __tablename__ = 'restVKD'
@@ -152,7 +152,7 @@ class db_liveVKD(db.Model):
     def __repr__(self):
         return f"<Issue Title: {self.issueTitle} Issue Summary: {self.issueSummary} Issue Type:{self.issueType}  Issue Remedy:{self.issueRemedy}>"
 
-class init_db_Engagement(db.Model):
+class db_Engagement(db.Model):
     __tablename__ = 'Engagement'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -160,8 +160,8 @@ class init_db_Engagement(db.Model):
     engagementName = db.Column(db.String())
     rtCode = db.Column(db.String())
     customerName = db.Column(db.String())
-    customerEmail = db.Coulmn(db.string())
-    customerOrg = db.Column(db.string())
+    customerEmail = db.Column(db.String())
+    customerOrg = db.Column(db.String())
     scopeField = db.Column(db.String())
     phaseId = db.Column(db.String()) 
 
