@@ -52,32 +52,32 @@ Issue control for engagements. These are issues that are applied to an issue or 
 
 
 
-@engagement_issue.post('/<int:engagement_id>/issue/')
+@issue.post('/<int:engagement_id>/issue/')
 def add_engagement_issue():
     #return the issue ID and the engagement id after creating it, needs to take in a whole lot here
     return "issue Added"
 
 
-@engagement_issue.get("/<int:engagement_id>/issue/")
+@issue.get("/<int:engagement_id>/issue/")
 def get_engagement_issues():
 
     ##list all issues attached to an engagement
     ## return list as python dict that should get jsonify'd
     return {"user":"me"}
 
-@engagement_issue.get("/<int:engagement_id>/issue/<int:issue_id>")
+@issue.get("/<int:engagement_id>/issue/<int:issue_id>")
 def get_engagement_issue():
     ##list one issue and all data for it including remediation etc
     return {"user":"me"}
 
 
-@engagement_issue.put("/<int:engagement_id>/issue/<int:issue_id>")
+@issue.put("/<int:engagement_id>/issue/<int:issue_id>")
 def update_engagement_issue():
     ##do sqlalchemy stuff to update one issue uipdates the entirety of it
     return "issue Updated"
 
 
-@engagement_issue.delete("/<int:engagement_id>/issue/<int:issue_id>")  ##delete one issue
+@issue.delete("/<int:engagement_id>/issue/<int:issue_id>")  ##delete one issue
 def delete_engagement_issue():
     #do sqlalchemy stuff to delete one issue
     return "issue Deleted"

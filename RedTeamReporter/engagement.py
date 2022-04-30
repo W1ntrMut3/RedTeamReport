@@ -8,7 +8,7 @@ def add_engagement():
 
 
 @engagement.get("/")
-def get_all_enagement():
+def get_all_engagement():
 
     ##for items in engagement (after sqlalchemy):
     ## return list as python dict that should get jsonify'd
@@ -36,6 +36,8 @@ def delete_engagement():
 PHASES
 
 '''
+
+phase = Blueprint("phase", __name__, url_prefix="/api/v1/phase")
 
 @phase.post('/<int:engagement_id>/phase/<int:phase_id>')
 def add_phase():
@@ -71,6 +73,8 @@ def delete_phase():
 ASSETS
 
 '''
+
+asset = Blueprint("asset", __name__, url_prefix="/api/v1/asset")
 
 @asset.post('/<int:engagement_id>/asset/<int:asset_id>')
 def add_asset():
