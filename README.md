@@ -20,21 +20,20 @@ Generate a CSV Report of the issues
 ### Database:
  - [ ] Create backend database connectors
     - [x] Create a database model using SQL Alchemy
-    - Create classes for the following tables:
+    - [x] Create classes for the following tables:
         - Rest VKD
         - Live VKD
         - Engagement
         - Assets
         - Authentication
         - Audit
-    - [ ] Create a database model function to control, refresh or manually update the database
+    - [x] Create a database model function to control, refresh or manually update the database
     - [ ] Create requests to the database for adding and removing issues
-    - [ ] Create requests to the database for adding and removing users
+    - [x] Create requests to the database for adding and removing users
     - [ ] Create requests to the database for adding and removing affected hosts to an engagement
     - [ ] Create requests to the database for adding and removing engagements
-    - [ ] Create requests to the database for adding and removing customers? -- might not need this tbh
     - [ ] Create requests to the database for adding and removing phases of engagements
-    - [ ] Add Foreign Keys to the database/create relations between data
+    - [x] Add Foreign Keys to the database/create relations between data
 
 ### Frontend:
  - [ ] Create frontend web application

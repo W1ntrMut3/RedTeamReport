@@ -1,6 +1,6 @@
 import re, string
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from RedTeamReporter.models import db, db_User
@@ -69,8 +69,25 @@ def login():
 
 
 @auth.get("/me")
+@jwt_required()
 def me():
-    return {"user":"me"}
+    ident = get_jwt_identity()
+    user = db_User.query.filter_by(id=ident).first()
+    return {"username": user.userName, 
+    "email": user.userEmail, 
+    "firstname": user.userFirstname, 
+    "lastname": user.userLastname, 
+    "phone": user.userPhone, 
+    "group": user.userGroup, 
+    "privilege": user.userPrivilege}, HTTP_200_OK
+
+
+@auth.get('/token/refresh')
+@jwt_required(refresh=True)
+def refresh_users_token():
+    identity = get_jwt_identity()
+    new_token = create_access_token(identity=identity)
+    return {'access_token': new_token}, HTTP_200_OK
 
 
 def validate_username(username):
