@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request, jsonify, Blueprint
-from RedTeamReporter import app, db, bcrypt
+#from RedTeamReporter import app, db, bcrypt
 from RedTeamReporter.forms import LoginForm
 from RedTeamReporter.models import db_Assets, db_liveVKD, db_restVKD, db_Engagement
 from RedTeamReporter.issue import add_issue, get_all_issue, get_one_issue, update_issue, delete_issue, copy_issue, add_engagement_issue, get_engagement_issue, get_engagement_issues, update_engagement_issue, delete_engagement_issue
@@ -17,11 +17,11 @@ def is_safe_url(target):
 
 
 
-@app.route('/', methods=['GET','POST'])
+#@app.route('/', methods=['GET','POST'])
 def main_page():
     return("Hello World")
 
-@app.get("/hello")
+#@app.get("/hello")
 def say_hello():
     return jsonify({"message": "hello world"})
 

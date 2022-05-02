@@ -1,3 +1,4 @@
 config.py
 __pycache__/
 flask_config.py
+database.db

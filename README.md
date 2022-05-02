@@ -34,7 +34,7 @@ Generate a CSV Report of the issues
     - [ ] Create requests to the database for adding and removing engagements
     - [ ] Create requests to the database for adding and removing customers? -- might not need this tbh
     - [ ] Create requests to the database for adding and removing phases of engagements
-
+    - [ ] Add Foreign Keys to the database/create relations between data
 
 ### Frontend:
  - [ ] Create frontend web application
@@ -53,7 +53,7 @@ Generate a CSV Report of the issues
 
 
 ### Backend:
- - [ ] Create API to hook into frontend
+ - [ ] Create API for frontend to hook into
 
  - [ ] Create word/template documenting functionality
     - [ ] Create a word template processing function by using python-docx-template
