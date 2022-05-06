@@ -58,6 +58,7 @@ def register():
 
 
 @auth.post('/login')
+@jwt_required(optional=True, verify_type=False)
 def login():
     email = request.json['email']
     password = request.json['password']
@@ -66,11 +67,18 @@ def login():
         
         check_password = check_password_hash(user.userPass, password)
         if check_password:
+            now = datetime.now(timezone.utc)
+            db.session.add(TokenBlocklist(jti=user.userAccesstoken, type="access", created_at=now, user_id=user.id))
+            db.session.add(TokenBlocklist(jti=user.userRefreshtoken, type="refresh", created_at=now, user_id=user.id))
             refresh_token=create_refresh_token(identity=user.id)
             access_token=create_access_token(identity=user.id)
+            user.userAccesstoken = decode_token(access_token)["jti"]
+            user.userRefreshtoken = decode_token(refresh_token)["jti"]
+            db.session.commit()
+
             return {
-                'refresh_token': refresh_token,
-                'access_token': access_token
+                    'refresh_token': refresh_token,
+                    'access_token': access_token
             }, HTTP_200_OK
             
     return {'message': 'Incorrect Credentials'}, HTTP_401_UNAUTHORIZED
@@ -111,7 +119,13 @@ def me():
 @jwt_required(refresh=True)
 def refresh_users_token():
     identity = get_jwt_identity()
+    user = db_User.query.filter_by(id=identity).first()
     new_token = create_access_token(identity=identity)
+    now = datetime.now(timezone.utc)
+    db.session.add(TokenBlocklist(jti=user.userAccesstoken, type="access", created_at=now, user_id=user.id))
+    user.userAccesstoken = decode_token(new_token)["jti"]
+    db.session.commit()
+
     return {'access_token': new_token}, HTTP_200_OK
 
 

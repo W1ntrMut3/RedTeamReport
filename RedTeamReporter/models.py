@@ -21,6 +21,8 @@ class db_User(db.Model):
     userName = db.Column(db.String(80), nullable=False, unique=True)
     userPass = db.Column(db.Text(), nullable=False)
     userEmail = db.Column(db.String(150), nullable=False, unique=True)
+    userAccesstoken = db.Column(db.Text())
+    userRefreshtoken = db.Column(db.Text())
     userPhone = db.Column(db.String(30))
     userFirstname = db.Column(db.String(50), nullable=False)
     userLastname = db.Column(db.String(50), nullable=False)
