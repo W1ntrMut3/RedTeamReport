@@ -1,6 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-
+from RedTeamReporter.models import db, db_User, db_liveVKD, db_restVKD, db_Engagement
 
 issue = Blueprint("issue", __name__, url_prefix="/api/v1/issue")
 
@@ -16,31 +16,55 @@ def add_issue():
     return "issue Added"
 
 
-@issue.get("/")
+@issue.get("/rest")
 @jwt_required()
-def get_all_issue():
-
+def get_all_rest_issue():
+    issue = db_restVKD.query.filter_by().all()
     ##for items in issue (after sqlalchemy):
     ## return list as python dict that should get jsonify'd, this is also maybe 
-    return {"user":"me"}
+    json = []
+    for item in issue:
+        json.append({
+            "id": item.id,
+            "title": item.issueTitle,
+            "body": item.issueBody,
+            "type": item.issueType,
+            "category": item.issueCategory,
+            "summary": item.issueSummary,
+            "remedy": item.issueRemedy,
+            "cwe": item.issueCwe,
+            "cve": item.issueCve,
+            "severity": item.issueSeverity,
+            "references": item.issueReferences,
+            "cvss": item.issueCvssvector,
+            "fairvector": item.issueFairvector,
+            "creator": item.issueCreator,
+            "lastmodified": item.issueLastmodifieduser,
+            "draftstatus": item.issueDraftstatus,
+            "createdtime": item.issueCreatedtime,
+            "lastmodifiedtime": item.issueLastmodifiedtime,
+        })
+        
+    return jsonify(json)
 
-@issue.get("/<int:rest_issue_id>")
+@issue.get("/rest/<int:rest_issue_id>")
 @jwt_required()
-def get_one_issue():
+def get_one_rest_issue():
     ##do sqlalchemy stuff to get one issue -- maye like this def search():
     #query = request.args.get("query") # here query will be the search inputs name
     #allVideos = Videos.query.filter(Videos.title.like("%"+query+"%")).all()
+    issue = db_live
     return {"user":"me"}
 
 
-@issue.put("/<int:rest_issue_id>")
+@issue.put("/rest/<int:rest_issue_id>")
 @jwt_required()
 def update_issue():
     ##do sqlalchemy stuff to update one issue
     return "issue Updated"
 
 
-@issue.delete("/<int:rest_issue_id>")  ##delete one issue
+@issue.delete("/rest/<int:rest_issue_id>")  ##delete one issue
 @jwt_required()
 def delete_issue():
     #do sqlalchemy stuff to delete one issue
