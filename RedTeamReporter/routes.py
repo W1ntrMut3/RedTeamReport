@@ -1,6 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request, jsonify, Blueprint
 #from RedTeamReporter import app, db, bcrypt
-from RedTeamReporter.forms import LoginForm
 from RedTeamReporter.models import db_Assets, db_liveVKD, db_restVKD, db_Engagement
 from RedTeamReporter.issue import add_issue, get_all_issue, get_one_issue, update_issue, delete_issue, copy_issue, add_engagement_issue, get_engagement_issue, get_engagement_issues, update_engagement_issue, delete_engagement_issue
 from RedTeamReporter.engagement import add_engagement, get_all_engagement, get_one_engagement, update_engagement, delete_engagement, add_phase, get_all_phase, get_one_phase, update_phase, delete_phase, add_asset, get_all_asset, get_one_asset, update_asset, delete_asset

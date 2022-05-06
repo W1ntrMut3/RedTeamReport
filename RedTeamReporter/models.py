@@ -11,6 +11,10 @@ def load_user(user_id):
 
 db = SQLAlchemy()
 
+'''
+Instantiating model for creating and interacting with the database.
+'''
+
 class db_User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer(), primary_key=True)
@@ -30,29 +34,28 @@ class db_User(db.Model):
     userPasswordchange = db.Column(db.Boolean(), default=False)# is a password change pending?
     userLoginattemptscount = db.Column(db.Integer(), default=0)#increment on failed login
     userCanLogin = db.Column(db.Boolean, default=True) #check to see if this is true before giving access
-
-
-
-    '''def __init__(self, id, userName, userPass, userEmail, userPhone, userGroup, userPrivilege, userLastlogin, userCreated, userOrg, userImage, userDob, userPasswordchange, userLoginattemptscount):
-        self.id = id
-        self.userName = userName
-        self.userPass = userPass
-        self.userEmail = userEmail
-        self.userPhone = userPhone
-        self.userGroup = userGroup
-        self.userPrivilege = userPrivilege
-        self.userLastlogin = userLastlogin
-        self.userCreated = userCreated
-        self.userOrg = userOrg
-        self.userImage = userImage
-        self.userDob = userDob
-        self.userPasswordchange = userPasswordchange
-        self.userLoginattemptscount = userLoginattemptscount
-        self.userCanLogin = userCanLogin'''
+    token = db.relationship('TokenBlocklist', backref='db_User', lazy=True)
     
     def __repr__(self):
         return f"User('{self.id}','{self.userName}', '{self.userEmail}', '{self.userCanLogin}')"
 
+
+'''
+Model for blacklisting sessions/JWT tokens, note: I need to write some sort of cleanup for sessions in here over x time.
+Also note: this is such a garbage way of handling session tokens, I need to figure out a better way to do this.
+'''
+class TokenBlocklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), nullable=False, index=True)
+    created_at = db.Column(db.DateTime, nullable=False)
+    type = db.Column(db.String(16), nullable=False)
+    user_id = db.Column(db.ForeignKey('User.id'), nullable=False)
+
+
+'''
+Model for creating and interacting with the static VKD, this table should only store curated issues that have been QA'd.
+
+'''
 
 class db_restVKD(db.Model):
     __tablename__ = 'restVKD'
@@ -100,7 +103,10 @@ class db_restVKD(db.Model):
     def __repr__(self):
         return f"<Issue Title: {self.issueTitle} Issue Summary: {self.issueSummary} Issue Type:{self.issueType}  Issue Remedy:{self.issueRemedy}>"
 
-
+'''
+Model for creating and interacting with the LIVE issue table. This will hold all issues that are in use in reports, 
+and import items in from the static database(db_restVKD). This will probably be the largest table.
+'''
 class db_liveVKD(db.Model):
     __tablename__ = 'liveVKD'
 
@@ -157,6 +163,12 @@ class db_liveVKD(db.Model):
     def __repr__(self):
         return f"<Issue Title: {self.issueTitle} Issue Summary: {self.issueSummary} Issue Type:{self.issueType}  Issue Remedy:{self.issueRemedy}>"
 
+'''
+Model for creating and interacting with engagement data. This will hold the framework of report creation and be the main
+pivot table for putting the report together. Everything will refer back to the engagement ID (issues assets and phases), to correlate
+where they need to be.
+'''
+
 class db_Engagement(db.Model):
     __tablename__ = 'Engagement'
 
@@ -186,6 +198,9 @@ class db_Engagement(db.Model):
     def __repr__(self):
         return f"<Engagement ID: {self.id} Name: {self.engagementName} RedTeam Code: {self.rtCode} Customer Name: {self.customerName}  Customer Email: {self.customerEmail} Scope: {self.scopeField} Consultant Name: {self.consultantName}>"
 
+'''
+Model for determining what phase issues are assigned to as well as the phase id and any scoping differences.
+'''
 class db_Phase(db.Model):
     __tablename__ = 'Phase'
 
@@ -205,6 +220,10 @@ class db_Phase(db.Model):
     def __repr__(self):
         return f"<Phase ID: {self.id} Name: {self.phaseName} Phase Scope: {self.phaseScope} Related Engagement ID: {self.engagementId}>"
 
+'''
+Model for determining what assets are assigned to what issue, and most likely engagement. Return points should be
+something along the lines of "assets where assetEngagementid = engagementId" or something similar.
+'''
 
 class db_Assets(db.Model):
     __tablename__ = 'Assets'

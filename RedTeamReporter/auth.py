@@ -1,13 +1,23 @@
 import re, string
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, decode_token, jwt_required, get_jwt_identity, get_jwt, JWTManager, verify_jwt_in_request
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timezone
 
-from RedTeamReporter.models import db, db_User
+from RedTeamReporter.models import db, db_User, TokenBlocklist
 from RedTeamReporter.constants.http_status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLICT
 
 
 auth = Blueprint("auth", __name__, url_prefix="/api/v1/auth")
+
+
+jwt = JWTManager()
+
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+    jti = jwt_payload["jti"]
+    token = db.session.query(TokenBlocklist.id).filter_by(jti=jti).scalar()
+    return token is not None
 
 @auth.post('/register')
 def register():
@@ -65,6 +75,21 @@ def login():
             
     return {'message': 'Incorrect Credentials'}, HTTP_401_UNAUTHORIZED
 
+'''
+When calling the below logout, make sure to pass both the access and refresh token
+otherwise the user can use them both still
+'''
+@auth.delete('/logout')
+@jwt_required(verify_type=False)
+def logout():
+    token = get_jwt()
+    jti = token["jti"]
+    ttype = token["type"]
+    now = datetime.now(timezone.utc)
+    #THIS user_id below should correlate to the user id i think... may be dragons ahead.
+    db.session.add(TokenBlocklist(jti=jti, type=ttype, created_at=now, user_id=get_jwt_identity()))
+    db.session.commit()
+    return jsonify(messsage=f"{ttype.capitalize()} token successfully revoked"), HTTP_200_OK
 
 
 

@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint
 from RedTeamReporter.models import db
-from flask_jwt_extended import JWTManager
+from RedTeamReporter.auth import jwt
 
 #from flask_login import LoginManager
 from RedTeamReporter.config.flask_config import Config, ProdConfig, DevConfig
@@ -20,18 +20,12 @@ else:
 
 db.app = app
 db.init_app(app)
-
-JWTManager(app)
+jwt.app = app
+jwt.init_app(app)
 
 app.register_blueprint(engagement)
 app.register_blueprint(issue)
 app.register_blueprint(auth)
 
-#app.config['SECRET_KEY'] = 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-
-#login_manager = LoginManager(app)
-#login_manager.login_view = 'login'
-#login_manager.login_message_category = 'info'
 
 from RedTeamReporter import routes
