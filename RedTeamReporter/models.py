@@ -82,25 +82,6 @@ class db_restVKD(db.Model):
     issueLastmodifiedtime = db.Column(db.DateTime(), onupdate=datetime.now(timezone.utc))
 
 
-    def __init__(self, id, issueTitle, issueBody, issueType, issueCategory, issueSummary, issueRemedy, issueCwe, issueCve, issueSeverity, issueReferences, issueCvssvector, issueFairvector, issueCreator, issueLastmodifieduser, issueDraftstatus, issueCreatedtime, issueLastmodifiedtime):
-        self.id = id
-        self.issueTitle = issueTitle
-        self.issueBody = issueBody
-        self.issueType = issueType 
-        self.issueCategory = issueCategory 
-        self.issueSummary = issueSummary
-        self.issueRemedy = issueRemedy  
-        self.issueCwe = issueCwe 
-        self.issueCve = issueCve
-        self.issueSeverity = issueSeverity
-        self.issueReferences = issueReferences
-        self.issueCvssvector = issueCvssvector
-        self.issueFairvector = issueFairvector
-        self.issueCreator = issueCreator
-        self.issueLastmodifieduser = issueLastmodifieduser  
-        self.issueDraftstatus = issueDraftstatus 
-        self.issueCreatedtime = issueCreatedtime
-        self.issueLastmodifiedtime = issueLastmodifiedtime 
     
     def __repr__(self):
         return f"<Issue Title: {self.issueTitle} Issue Summary: {self.issueSummary} Issue Type:{self.issueType}  Issue Remedy:{self.issueRemedy}>"
@@ -132,35 +113,11 @@ class db_liveVKD(db.Model):
     issueLastmodifiedtime = db.Column(db.DateTime(), onupdate=datetime.now(timezone.utc))
     issuePhaseid = db.Column(db.Integer(), db.ForeignKey('Phase.id')) #foreignkey phase
     engagementId = db.Column(db.Text(), db.ForeignKey('Engagement.id')) #foreignkey engagement
-    issueAddtovkd = db.Column(db.Boolean())
+    issueAddtovkd = db.Column(db.Boolean)
     issueRestid = db.Column(db.Text())
-    issueRetestflag = db.Column(db.Boolean())
+    issueRetestflag = db.Column(db.Boolean)
     assets = db.relationship('db_Assets', backref='liveVKD', lazy=True)
 
-    def __init__(self, id, issueTitle, issueBody, issueType, issueCategory, issueSummary, issueRemedy, issueCwe, issueCve, issueSeverity, issueReferences, issueCvssvector, issueFairvector, issueCreator, issueLastmodifieduser, issueDraftstatus, issueCreatedtime, issueLastmodifiedtime, issuePhaseid, engagementId, issueAddtovkd, issueRestid, issueRetestflag):
-        self.id = id
-        self.issueTitle = issueTitle
-        self.issueBody = issueBody
-        self.issueType = issueType 
-        self.issueCategory = issueCategory 
-        self.issueSummary = issueSummary
-        self.issueRemedy = issueRemedy  
-        self.issueCwe = issueCwe 
-        self.issueCve = issueCve
-        self.issueSeverity = issueSeverity
-        self.issueReferences = issueReferences
-        self.issueCvssvector = issueCvssvector
-        self.issueFairvector = issueFairvector
-        self.issueCreator = issueCreator
-        self.issueLastmodifieduser = issueLastmodifieduser  
-        self.issueDraftstatus = issueDraftstatus 
-        self.issueCreatedtime = issueCreatedtime
-        self.issueLastmodifiedtime = issueLastmodifiedtime 
-        self.issuePhaseid = issuePhaseid
-        self.engagementId = engagementId
-        self.issueAddtovkd = issueAddtovkd
-        self.issueRestid = issueRestid
-        self.issueRetestflag = issueRetestflag
     
     def __repr__(self):
         return f"<Issue Title: {self.issueTitle} Issue Summary: {self.issueSummary} Issue Type:{self.issueType}  Issue Remedy:{self.issueRemedy}>"
@@ -174,7 +131,7 @@ where they need to be.
 class db_Engagement(db.Model):
     __tablename__ = 'Engagement'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     engagementName = db.Column(db.Text())
     rtCode = db.Column(db.Text())
     customerName = db.Column(db.Text())
@@ -182,20 +139,13 @@ class db_Engagement(db.Model):
     customerOrg = db.Column(db.Text())
     scopeField = db.Column(db.Text())
     consultantName = db.Column(db.Text())
+    createdTime = db.Column(db.DateTime(), default=datetime.now(timezone.utc))
     issue = db.relationship('db_liveVKD', backref='Engagement', lazy=True)
     assets = db.relationship('db_Assets', backref='Engagement', lazy=True)
     phase = db.relationship('db_Phase', backref='Engagement', lazy=True)
 
 
-    def __init__(self, id, engagementId, engagementName, rtCode, customerId, scopeId, consultantName):
-        self.id = id
-        self.engagementName = engagementName
-        self.rtCode = rtCode 
-        self.customerName = customerName
-        self.customerEmail = customerEmail
-        self.customerOrg = customerOrg
-        self.scopeField = scopeId
-        self.consultantName = consultantName
+
     
     def __repr__(self):
         return f"<Engagement ID: {self.id} Name: {self.engagementName} RedTeam Code: {self.rtCode} Customer Name: {self.customerName}  Customer Email: {self.customerEmail} Scope: {self.scopeField} Consultant Name: {self.consultantName}>"
@@ -213,11 +163,7 @@ class db_Phase(db.Model):
     issue = db.relationship('db_liveVKD', backref='Phase', lazy=True)
 
 
-    def __init__(self, id, engagementId, engagementName, rtCode, customerId, scopeId, phaseId):
-        self.id = id
-        self.engagementId = engagementId
-        self.phaseScope = phaseScope
-        self.phaseName = phaseName
+
     
     def __repr__(self):
         return f"<Phase ID: {self.id} Name: {self.phaseName} Phase Scope: {self.phaseScope} Related Engagement ID: {self.engagementId}>"
@@ -239,14 +185,6 @@ class db_Assets(db.Model):
     assetLocation = db.Column(db.Text())
 
 
-    def __init__(self, id, assetEngagementid, assetName, assetFqdn, assetCriticality, assetLocation):
-        self.id = id
-        self.assetEngagementid = assetEngagementid
-        self.assetIssueid = assetIssueid
-        self.assetName = assetName
-        self.assetFqdn = assetFqdn
-        self.assetCriticality = assetCriticality
-        self.assetLocation = assetLocation
     
     def __repr__(self):
         return f"<Asset name: {self.assetName}, Asset Engagement ID: {self.assetEngagementid}, Asset Issue ID: {self.assetIssueid}>"

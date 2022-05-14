@@ -28,11 +28,12 @@ Generate a CSV Report of the issues
         - Authentication
         - Audit
     - [x] Create a database model function to control, refresh or manually update the database
-    - [ ] Create requests to the database for adding and removing issues
-    - [x] Create requests to the database for adding and removing users
+    - [ ] Create requests to the database for adding issues
+    - [x] Create requests to the database for adding users
     - [ ] Create requests to the database for adding and removing affected hosts to an engagement
-    - [ ] Create requests to the database for adding and removing engagements
-    - [ ] Create requests to the database for adding and removing phases of engagements
+    - [x] Create requests to the database for adding engagements
+    - [x] Create requests to the database for adding  phases of engagements
+    - [ ] Create requests for everything to remove and update them.
     - [x] Add Foreign Keys to the database/create relations between data
 
 ### Frontend:

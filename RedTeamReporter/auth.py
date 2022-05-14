@@ -68,8 +68,9 @@ def login():
         check_password = check_password_hash(user.userPass, password)
         if check_password:
             now = datetime.now(timezone.utc)
-            db.session.add(TokenBlocklist(jti=user.userAccesstoken, type="access", created_at=now, user_id=user.id))
-            db.session.add(TokenBlocklist(jti=user.userRefreshtoken, type="refresh", created_at=now, user_id=user.id))
+            if user.userAccesstoken is not None:
+                db.session.add(TokenBlocklist(jti=user.userAccesstoken, type="access", created_at=now, user_id=user.id))
+                db.session.add(TokenBlocklist(jti=user.userRefreshtoken, type="refresh", created_at=now, user_id=user.id))
             refresh_token=create_refresh_token(identity=user.id)
             access_token=create_access_token(identity=user.id)
             user.userAccesstoken = decode_token(access_token)["jti"]

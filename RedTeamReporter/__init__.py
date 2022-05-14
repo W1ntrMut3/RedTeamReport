@@ -5,7 +5,7 @@ from RedTeamReporter.auth import jwt
 #from flask_login import LoginManager
 from RedTeamReporter.config.flask_config import Config, ProdConfig, DevConfig
 from RedTeamReporter.issue import issue
-from RedTeamReporter.engagement import engagement, phase, asset
+from RedTeamReporter.engagement import engagement
 from RedTeamReporter.auth import auth
 
 
