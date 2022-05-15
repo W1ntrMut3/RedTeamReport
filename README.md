@@ -28,13 +28,15 @@ Generate a CSV Report of the issues
         - Authentication
         - Audit
     - [x] Create a database model function to control, refresh or manually update the database
-    - [ ] Create requests to the database for adding issues
+    - [x] Create requests to the database for adding issues
     - [x] Create requests to the database for adding users
     - [ ] Create requests to the database for adding and removing affected hosts to an engagement
     - [x] Create requests to the database for adding engagements
     - [x] Create requests to the database for adding  phases of engagements
     - [ ] Create requests for everything to remove and update them.
     - [x] Add Foreign Keys to the database/create relations between data
+    - [ ] Add Error checking and handling to each of the API calls to sanitise data and return helpful errors.
+    - [x] Add a database migration tool to create the database and tables
 
 ### Frontend:
  - [ ] Create frontend web application
@@ -53,8 +55,8 @@ Generate a CSV Report of the issues
 
 
 ### Backend:
- - [ ] Create API for frontend to hook into
-
+ - [ ] Create password reset
+ - [ ] Create email functionality
  - [ ] Create word/template documenting functionality
     - [ ] Create a word template processing function by using python-docx-template
     - [ ] Create a word document template with jinja2
