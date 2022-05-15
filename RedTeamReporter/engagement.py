@@ -144,15 +144,16 @@ def add_phase(engagement_id):
         return {"ERROR":"EngagementID not found"}, HTTP_404_NOT_FOUND
 
 
-@engagement.get("/<int:engagement_id>/phase/")
+@engagement.get("/<int:engagement_id>/get_phases/")
 @jwt_required()
-def get_all_phase():
+def get_all_phase(engagement_id):
+    output = {}
+    engagement = db_Phase.query.filter_by(engagementId=engagement_id).all()
+    for item in engagement:
+        output[item.id] = item.phaseName
+    return jsonify(output)
 
-    ##for items in engagement for items in phase (after sqlalchemy):
-    ## return list as python dict that should get jsonify'd
-    return {"user":"me"}
-
-@engagement.get("/<int:engagement_id>/phase/<int:phase_id>")
+@engagement.get("/<int:engagement_id>/get_single_phase/<int:phase_id>")
 @jwt_required()
 def get_one_phase():
     ##do sqlalchemy stuff to get one phase
@@ -165,7 +166,10 @@ def update_phase():
     ##do sqlalchemy stuff to update one phase
     return "phase Updated"
 
-
+'''
+This needs some more thought, for example what do we do with the issues attached to a phase if it is deleted? do we just say that those issues are also deleteD?
+They technically arent abandoned as we could find the issues due to the engagement. Perhaps a "Issues not in phase" area?
+'''
 @engagement.delete("/<int:engagement_id>/phase/<int:phase_id>")  ##delete one phase
 @jwt_required()
 def delete_phase():
@@ -180,25 +184,47 @@ ASSETS
 
 #asset = Blueprint("asset", __name__, url_prefix="/api/v1/asset")
 
-@engagement.post('/<int:engagement_id>/asset/<int:asset_id>')
+@engagement.post('/<int:engagement_id>/asset/<int:asset_issue_id>')
 @jwt_required()
-def add_asset():
-    return "asset Added"
+def add_asset(engagement_id, asset_issue_id):
+    name = request.json['assetname']
+    fqdn = request.json['assetfqdn']
+    criticality = request.json['assetcriticality']
+    location = request.json['assetlocation']
+    engagement = db_Engagement.query.filter_by(id=engagement_id).first()
+    issue = db_liveVKD.query.filter_by(id=asset_issue_id).first()
+    print(engagement.id)
+    print(issue.engagementId)
+    if engagement is not None:
+        if issue is not None:
+            if int(issue.engagementId) == int(engagement.id):
+                newAsset = db_Assets(assetIssueid=asset_issue_id, assetEngagementid=engagement_id, assetName = name, assetFqdn = fqdn, assetCriticality=criticality, assetLocation = location)
+                db.session.add(newAsset)
+                db.session.commit()
+                return {"assetID": str(newAsset.id)}, HTTP_200_OK
+            else:
+                return {"ERROR":"Issue not in engagement"}, HTTP_404_NOT_FOUND
+    return {"ERROR":"EngagementID or IssueID not found"}, HTTP_404_NOT_FOUND
 
 
-@engagement.get("/<int:engagement_id>/asset/")
+@engagement.get("/<int:engagement_id>/assets/")
 @jwt_required()
-def get_all_asset():
-
+def get_all_asset_for_engagement(engagement_id):
+    query = db_Assets.query.filter_by(assetEngagementid=engagement_id).all()
+    assets = []
+    for item in query:
+        assets.append({
+                "assetID": item.id,
+                "assetName": item.assetName,
+                "assetFQDN": item.assetFqdn,
+                "assetCriticality": item.assetCriticality,
+                "assetLocation": item.assetLocation
+            })
     ##for items in engagement for items in asset (after sqlalchemy):
     ## return list as python dict that should get jsonify'd
-    return {"user":"me"}
+    return jsonify(assets)
 
-@engagement.get("/<int:engagement_id>/asset/<int:asset_id>")
-@jwt_required()
-def get_one_asset():
-    ##do sqlalchemy stuff to get one asset
-    return {"user":"me"}
+
 
 
 @engagement.put("/<int:engagement_id>/asset/<int:asset_id>")
