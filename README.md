@@ -33,10 +33,12 @@ Generate a CSV Report of the issues
     - [ ] Create requests to the database for adding and removing affected hosts to an engagement
     - [x] Create requests to the database for adding engagements
     - [x] Create requests to the database for adding  phases of engagements
-    - [ ] Create requests for everything to remove and update them.
+    - [x] Create requests for everything to remove them.
     - [x] Add Foreign Keys to the database/create relations between data
     - [ ] Add Error checking and handling to each of the API calls to sanitise data and return helpful errors.
     - [x] Add a database migration tool to create the database and tables
+    - [ ] Add pagination and deal with slow streams of data so that we dont return everything all at once
+    - [x] Add a way to modify engagements/phases/assets/issues/users
 
 ### Frontend:
  - [ ] Create frontend web application

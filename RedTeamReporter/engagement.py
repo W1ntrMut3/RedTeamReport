@@ -108,9 +108,47 @@ def get_engagement_issues(engagement_id):
 
 @engagement.put("/<int:engagement_id>")
 @jwt_required()
-def update_engagement():
-    ##do sqlalchemy stuff to update one engagement
-    return "Engagement Updated"
+def update_engagement(engagement_id):
+    engagement = db_Engagement.query.filter_by(id=engagement_id).first()
+    update_counter = []
+    engagementName = request.json['engagementName']
+    rtCode = request.json['rtCode']
+    customerName = request.json['customerName']
+    customerEmail = request.json['customerEmail']
+    customerOrg = request.json['customerOrg']
+    scopeField = request.json['scopeField']
+    consultantName = request.json['consultantName']
+    if engagementName != "":
+        engagement.engagementName = engagementName
+        db.session.flush()
+        update_counter.append("engagementName")
+    if rtCode != "":
+        engagement.rtCode = rtCode
+        db.session.flush()
+        update_counter.append("rtCode")
+    if customerName != "":
+        engagement.customerName = customerName
+        db.session.flush()
+        update_counter.append("customerName")
+    if customerEmail != "":
+        engagement.customerEmail = customerEmail
+        db.session.flush()
+        update_counter.append("customerEmail")
+    if customerOrg != "":
+        engagement.customerOrg = customerOrg
+        db.session.flush()
+        update_counter.append("customerOrg")
+    if scopeField != "":
+        engagement.scopeField = scopeField
+        db.session.flush()
+        update_counter.append("scopeField")
+    if consultantName != "":
+        engagement.consultantName = consultantName
+        db.session.flush()
+        update_counter.append("consultantName")
+    db.session.commit()
+    return {"engagementID": str(engagement.id), "Updated Items": update_counter}
+    
 
 
 @engagement.delete("/<int:engagement_id>")  ##delete one engagement
@@ -160,11 +198,30 @@ def get_one_phase():
     return {"user":"me"}
 
 
+
+
 @engagement.put("/<int:engagement_id>/phase/<int:phase_id>")
 @jwt_required()
-def update_phase():
-    ##do sqlalchemy stuff to update one phase
-    return "phase Updated"
+def update_phase(engagement_id, phase_id):
+    phase = db_Phase.query.filter_by(id=phase_id).first()
+    engagement = db_Engagement.query.filter_by(id=engagement_id).first()
+    if phase.engagementId != engagement.id:
+        return {"ERROR":"Phase does not exist in engagement"}, HTTP_404_NOT_FOUND
+    
+    update_counter = []
+    phase_name = request.json['phasename']
+    phase_scope = request.json['phasescope']
+
+    if phase_name != "":
+        phase.phaseName = phase_name
+        db.session.flush()
+        update_counter.append("phaseName")
+    if phase_scope != "":
+        phase.phaseScope = phase_scope
+        db.session.flush()
+        update_counter.append("phaseScope")
+    db.session.commit()
+    return {"phaseID": str(phase.id), "Updated Items": update_counter}
 
 '''
 This needs some more thought, for example what do we do with the issues attached to a phase if it is deleted? do we just say that those issues are also deleteD?
@@ -174,6 +231,7 @@ They technically arent abandoned as we could find the issues due to the engageme
 @jwt_required()
 def delete_phase():
     #do sqlalchemy stuff to delete one phase
+    
     return "phase Deleted"
 
 
@@ -229,9 +287,36 @@ def get_all_asset_for_engagement(engagement_id):
 
 @engagement.put("/<int:engagement_id>/asset/<int:asset_id>")
 @jwt_required()
-def update_asset():
-    ##do sqlalchemy stuff to update one asset
-    return "asset Updated"
+def update_asset(engagement_id, asset_id):
+    asset = db_Assets.query.filter_by(id=asset_id).first()
+    engagement = db_Engagement.query.filter_by(id=engagement_id).first()
+    if int(asset.assetEngagementid) != int(engagement.id):
+        return {"ERROR":"Asset does not exist in engagement", "asset":asset.assetEngagementid,"engagement":engagement.id}, HTTP_404_NOT_FOUND
+    
+    update_counter = []
+    asset_name = request.json['assetname']
+    asset_fqdn = request.json['assetfqdn']
+    criticality = request.json['assetcriticality']
+    location = request.json['assetlocation']
+
+    if asset_name != "":
+        asset.assetName = asset_name
+        db.session.flush()
+        update_counter.append("assetName")
+    if asset_fqdn != "":
+        asset.assetFqdn = asset_fqdn
+        db.session.flush()
+        update_counter.append("assetFqdn")
+    if criticality != "":
+        asset.assetCriticality = criticality
+        db.session.flush()
+        update_counter.append("assetCriticality")
+    if location != "":
+        asset.assetLocation = location
+        db.session.flush()
+        update_counter.append("assetLocation")
+    db.session.commit()
+    return {"assetID": str(asset.id), "Updated Items": update_counter}
 
 
 @engagement.delete("/<int:engagement_id>/asset/<int:asset_id>")  ##delete one asset
