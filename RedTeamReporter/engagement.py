@@ -153,9 +153,17 @@ def update_engagement(engagement_id):
 
 @engagement.delete("/<int:engagement_id>")  ##delete one engagement
 @jwt_required()
-def delete_engagement():
-    #do sqlalchemy stuff to delete one engagement
-    return "Engagement Deleted"
+def delete_engagement(engagement_id):
+    engagement = db_Engagement.query.filter_by(id=engagement_id).first()
+    phase = db_Phase.query.filter_by(engagementId=engagement_id).all()
+    issue = db_liveVKD.query.filter_by(issuePhaseid=engagement_id).all()
+    for issues in issue:
+        db.session.delete(issues)
+    for phases in phase:
+        db.session.delete(phases)
+    db.session.delete(engagement)
+    db.session.commit()
+    return {"engagementID, all related phases, all related issues Deleted": str(engagement.id)}
 
 
 '''
@@ -229,11 +237,16 @@ They technically arent abandoned as we could find the issues due to the engageme
 '''
 @engagement.delete("/<int:engagement_id>/phase/<int:phase_id>")  ##delete one phase
 @jwt_required()
-def delete_phase():
-    #do sqlalchemy stuff to delete one phase
-    
-    return "phase Deleted"
-
+def delete_phase(engagement_id, phase_id):
+    engagement = db_Engagement.query.filter_by(id=engagement_id).first()
+    phase = db_Phase.query.filter_by(id=phase_id).first()
+    if phase.engagementId != engagement.id:
+        return {"ERROR":"Phase does not exist in engagement"}, HTTP_404_NOT_FOUND
+    if phase is not None:
+        storage = phase.id
+        db.session.delete(phase)
+        db.session.commit()
+        return {"phaseID Deleted": storage}, HTTP_200_OK
 
 '''
 ASSETS
@@ -321,6 +334,16 @@ def update_asset(engagement_id, asset_id):
 
 @engagement.delete("/<int:engagement_id>/asset/<int:asset_id>")  ##delete one asset
 @jwt_required()
-def delete_asset():
+def delete_asset(engagement_id, asset_id):
     #do sqlalchemy stuff to delete one asset
-    return "asset Deleted"
+    asset = db_Assets.query.filter_by(id=asset_id).first()
+    engagement = db_Engagement.query.filter_by(id=engagement_id).first()
+    if int(asset.assetEngagementid) != int(engagement.id):
+        return {"ERROR":"Asset does not exist in engagement"}, HTTP_404_NOT_FOUND
+    if db_Assets.query.filter_by(id=asset_id).first() is not None:
+        storage = asset.id
+        db_Assets.query.filter_by(id=asset_id).delete()
+        db.session.commit()
+        return {"Asset Successfully Deleted ID:":storage}
+
+    

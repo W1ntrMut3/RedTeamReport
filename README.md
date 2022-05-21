@@ -34,6 +34,7 @@ Generate a CSV Report of the issues
     - [x] Create requests to the database for adding engagements
     - [x] Create requests to the database for adding  phases of engagements
     - [x] Create requests for everything to remove them.
+    - [ ] Create a delete request and process for engagement (delete everything related to it)
     - [x] Add Foreign Keys to the database/create relations between data
     - [ ] Add Error checking and handling to each of the API calls to sanitise data and return helpful errors.
     - [x] Add a database migration tool to create the database and tables
